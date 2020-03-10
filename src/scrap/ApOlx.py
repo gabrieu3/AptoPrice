@@ -4,6 +4,7 @@ import json
 import time
 from bs4 import BeautifulSoup
 from src.dto.ApDto import ApDto
+from random import randrange
 
 class ApOlx:
     url = ''
@@ -12,11 +13,13 @@ class ApOlx:
                              'Chrome/53.0.2785.143 Safari/537.36'}
 
     def __init__(self):
-        self.pages = 100
+        self.pages = 101
 
     # Search Html page
     def get_page_html(self, url):
-        time.sleep(5)
+        print('get_page_html: ' + url)
+
+        time.sleep(randrange(1, 4))
         r = requests.get(url, headers=self.headers)
 
         if r.status_code == 200:
@@ -54,22 +57,22 @@ class ApOlx:
         except Exception as e:
             obj = ''
 
-        ap.id = obj["ad"]["listId"]
-        ap.title = obj["ad"]["subject"]
-        ap.description = obj["ad"]["body"]
-        ap.price = obj["ad"]["priceValue"]
-        ap.old_price = obj["ad"]["oldPrice"]
-        ap.category =obj["ad"]["categoryName"]
-        ap.url = obj["ad"]["friendlyUrl"]
-        ap.seller = obj["ad"]["user"]["name"]
-        ap.phone = obj["ad"]["phone"]["phone"]
-        ap.image = obj["ad"]["images"]
-        ap.city = obj["ad"]["location"]["municipality"]
-        ap.uf = obj["ad"]["location"]["uf"]
-        ap.cep = obj["ad"]["location"]["zipcode"]
-        ap.neighbourhood = obj["ad"]["location"]["neighbourhood"]
-        ap.address = obj["ad"]["location"]["address"]
-        ap.dateInsert = obj["ad"]["listTime"]
+        ap.set_id(obj["ad"]["listId"])
+        ap.set_title(obj["ad"]["subject"])
+        ap.set_description(obj["ad"]["body"])
+        ap.set_price(obj["ad"]["priceValue"])
+        ap.set_old_price(obj["ad"]["oldPrice"])
+        ap.set_category(obj["ad"]["categoryName"])
+        ap.set_url(obj["ad"]["friendlyUrl"])
+        ap.set_seller(obj["ad"]["user"]["name"])
+        ap.set_phone(obj["ad"]["phone"]["phone"])
+        ap.set_image(obj["ad"]["images"])
+        ap.set_city(obj["ad"]["location"]["municipality"])
+        ap.set_uf(obj["ad"]["location"]["uf"])
+        ap.set_cep(obj["ad"]["location"]["zipcode"])
+        ap.set_neighbourhood(obj["ad"]["location"]["neighbourhood"])
+        ap.set_address(obj["ad"]["location"]["address"])
+        ap.set_date_insert(obj["ad"]["listTime"])
 
         return ap
 

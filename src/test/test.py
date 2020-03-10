@@ -2,6 +2,8 @@
 import re
 import json
 from src.scrap.ApOlx import ApOlx
+from src.dco.ApDco import ApDco
+from src.dto.ApDto import ApDto
 import time
 from bs4 import BeautifulSoup
 
@@ -1150,3 +1152,13 @@ print(b.dateInsert) '''
 print('oi')
 time.sleep(5)
 print('tchau')
+a = ApDco()
+b = ApDto('html')
+b.title = 'Primeiro'
+c = ApDto('html')
+c.title = 'Segundo'
+aptos=[]
+aptos.append(b)
+aptos.append(c)
+a.write_results(aptos)
+

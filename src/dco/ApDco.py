@@ -1,4 +1,5 @@
 from src.scrap.ApOlx import ApOlx
+from src.dao.ApDao import ApDao
 import pandas as pd
 
 
@@ -8,18 +9,29 @@ class ApDco:
 
     def __init__(self):
         self.oconn = ApOlx()
-        self.aptos = []
+        self.dao = ApDao()
 
     # Get Results from OLX website
     def get_results(self):
-        html = self.oconn.get_page_html(self.url + '1')
-        links = self.oconn.get_links(html)
+        for i in range(1, self.oconn.pages):
+            html = self.oconn.get_page_html(self.url + str(i))
+            links = self.oconn.get_links(html)
+            aptos = []
+            for link in links:
+                ap = self.get_dto_ap(link)
+                ap.set_page(i)
+                aptos.append(ap)
+                self.dao.save(ap)
+        return aptos
 
-        for link in links:
-            html = self.oconn.get_page_html(link)
-            self.aptos.append(self.oconn.get_data(html))
+    def get_dto_ap(self, link):
+        html = self.oconn.get_page_html(link)
+        return self.oconn.get_data(html)
 
-        return self.aptos
+    # Write results into a DB Mysql
+    def write_results_db(self, aptos):
+        for ap in aptos:
+            self.dao.save(ap)
 
     # Write results into a sheet
     def write_results(self, aptos):
@@ -34,7 +46,7 @@ class ApDco:
         apto_city = []
         apto_neighbourhood = []
         apto_address = []
-        apto_dateInsert = []
+        apto_date_insert = []
 
         for ap in aptos:
             apto_id.append(ap.id)
@@ -47,17 +59,17 @@ class ApDco:
             apto_city.append(ap.id)
             apto_neighbourhood.append(ap.neighbourhood)
             apto_address.append(ap.address)
-            apto_dateInsert.append(ap.dateInsert)
+            apto_date_insert.append(ap.date_insert)
 
         df = pd.DataFrame({'id': apto_id,
                            'title': apto_title,
                            'price': apto_price,
                            'old_price': apto_old_price,
-                           'url': apto_url
+                           'url': apto_url,
                            'seller': apto_seller,
                            'phone': apto_phone,
                            'city': apto_city,
                            'neighbourhood': apto_neighbourhood,
                            'address': apto_address,
-                           'dateInsert': apto_dateInsert})
+                           'dateInsert': apto_date_insert})
         df.to_csv('aptos_olx.csv', index=False, encoding='utf-8')
