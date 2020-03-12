@@ -1,7 +1,7 @@
 from src.dco.ApDco import ApDco
 from src.dao.ApDao import ApDao
 
-link = 'https://sc.olx.com.br/norte-de-santa-catarina/imoveis/apartamentos-com-otimo-padrao-no-espinheiros-715173014'
+link = 'https://sc.olx.com.br/norte-de-santa-catarina/imoveis/apartamento-a-venda-com-2-dormitorios-em-adhemar-garcia-joinville-cod-v15078-716944544'
 dco = ApDco()
 dao = ApDao()
 

@@ -13,7 +13,7 @@ class ApDco:
 
     # Get Results from OLX website
     def get_results(self):
-        for i in range(1, self.oconn.pages):
+        for i in range(73, self.oconn.pages):
             html = self.oconn.get_page_html(self.url + str(i))
             links = self.oconn.get_links(html)
             aptos = []

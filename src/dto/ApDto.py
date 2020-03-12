@@ -2,6 +2,7 @@ import datetime
 import re
 import pandas as pd
 
+
 class ApDto:
 
     def __init__(self, html):
@@ -33,10 +34,13 @@ class ApDto:
         return self.id
 
     def set_id(self, id):
-        if pd.isnull(id):
-            self.id = 1
-        else:
-            self.id = int(re.sub('[\W_]+', '', str(id)))
+        try:
+            if pd.isnull(id):
+                self.id = '1'
+            else:
+                self.id = id
+        except Exception as error:
+            print('ID : <' + id + '> Error: ' + error)
 
     def set_cod(self, cod):
         if pd.isnull(cod):
