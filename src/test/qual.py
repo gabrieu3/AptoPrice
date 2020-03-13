@@ -1,2 +1,1 @@
-from random import randrange
-print(randrange(1,3))
+print('teste gabriel'.find('gabriel2'))
