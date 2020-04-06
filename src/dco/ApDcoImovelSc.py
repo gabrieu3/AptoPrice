@@ -1,32 +1,22 @@
-from src.scrap.ApOlx import ApOlx
+from src.scrap.ApImovelSc import ApImovelSc
 from src.dao.ApDao import ApDao
 import pandas as pd
 
 
-class ApDco:
-    url = r'https://sc.olx.com.br/norte-de-santa-catarina/regiao-de-joinville-e-norte-do-estado/joinville/imoveis' \
-          r'/venda/apartamentos?o='
+class ApDcoImovelSc:
 
     def __init__(self):
-        self.oconn = ApOlx()
+        self.obj = ApImovelSc()
         self.dao = ApDao()
 
-    # Get Results from OLX website
-    def get_results(self):
-        for i in range(73, self.oconn.pages):
-            html = self.oconn.get_page_html(self.url + str(i))
-            links = self.oconn.get_links(html)
-            aptos = []
-            for link in links:
-                ap = self.get_dto_ap(link)
-                ap.set_page(i)
-                aptos.append(ap)
-                self.dao.save(ap)
-        return aptos
+    # Write results into a DB Mysql
+    def save_apto_db(self, aptos):
+        for ap in aptos:
+            self.dao.save(ap)
 
-    def get_dto_ap(self, link):
-        html = self.oconn.get_page_html(link)
-        return self.oconn.get_data(html)
+    def get_aptos(self):
+        aptos = self.obj.get_aptos()
+        self.save_apto_db(aptos)
 
     # Write results into a DB Mysql
     def write_results_db(self, aptos):

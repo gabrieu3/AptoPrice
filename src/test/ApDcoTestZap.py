@@ -1,4 +1,4 @@
 from src.dco.ApDcoZap import ApDcoZap
 
-zap = ApDcoZap()
-zap.get_results()
+ApDcoZap().get_aptos_zap()
+

@@ -1,27 +1,22 @@
-from src.scrap.ApZap import ApZap
+from src.scrap.ApOlx import ApOlx
 from src.dao.ApDao import ApDao
 import pandas as pd
 
 
-class ApDcoZap:
+class ApDcoOlx:
 
     def __init__(self):
-        self.zap = ApZap()
         self.dao = ApDao()
+        self.olx = ApOlx()
 
     # Write results into a DB Mysql
     def save_apto_db(self, aptos):
         for ap in aptos:
             self.dao.save(ap)
 
-    def get_aptos_zap(self):
-        aptos = self.zap.get_aptos_zap()
+    def get_aptos_olx(self):
+        aptos = self.olx.get_aptos_olx()
         self.save_apto_db(aptos)
-
-    # Write results into a DB Mysql
-    def write_results_db(self, aptos):
-        for ap in aptos:
-            self.dao.save(ap)
 
     # Write results into a sheet
     def write_results(self, aptos):

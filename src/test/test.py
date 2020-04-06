@@ -2,7 +2,7 @@
 import re
 import json
 from src.scrap.ApOlx import ApOlx
-from src.dco.ApDco import ApDco
+from src.dco.ApDcoOlx import ApDco
 from src.dto.ApDto import ApDto
 import time
 from bs4 import BeautifulSoup

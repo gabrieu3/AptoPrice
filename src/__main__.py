@@ -1,4 +1,4 @@
-from src.dco.ApDco import ApDco
+from src.dco.ApDcoOlx import ApDco
 
 a = ApDco()
 aptos = a.get_results()

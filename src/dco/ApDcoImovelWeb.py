@@ -1,12 +1,12 @@
-from src.scrap.ApZap import ApZap
+from src.scrap.ApImovelWeb import ApImovelWeb
 from src.dao.ApDao import ApDao
 import pandas as pd
 
 
-class ApDcoZap:
+class ApDcoImovelWeb:
 
     def __init__(self):
-        self.zap = ApZap()
+        self.obj = ApImovelWeb()
         self.dao = ApDao()
 
     # Write results into a DB Mysql
@@ -14,8 +14,8 @@ class ApDcoZap:
         for ap in aptos:
             self.dao.save(ap)
 
-    def get_aptos_zap(self):
-        aptos = self.zap.get_aptos_zap()
+    def get_aptos(self):
+        aptos = self.obj.get_aptos()
         self.save_apto_db(aptos)
 
     # Write results into a DB Mysql

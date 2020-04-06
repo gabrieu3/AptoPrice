@@ -9,11 +9,11 @@ class ApDao:
 
     def insert(self, apto):
         query = 'insert into apto(id, title, description, price, old_price, category, url, seller, phone, ' \
-                'image, city, uf, cep, neighbourhood, address, date_insert, page) ' \
-                'values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+                'image, city, uf, cep, neighbourhood, address, date_insert, page, site) ' \
+                'values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
         args = (str(apto.id),str(apto.title),str(apto.description),str(apto.price),str(apto.old_price),str(apto.category),
                 str(apto.url),str(apto.seller),str(apto.phone),str(apto.image),str(apto.city),str(apto.uf),
-                str(apto.cep),str(apto.neighbourhood),str(apto.address),str(apto.date_insert),int(apto.page))
+                str(apto.cep),str(apto.neighbourhood),str(apto.address),str(apto.date_insert),int(apto.page),str(apto.site))
         print('INSERT: ' + str(args))
         conn = self.c.connect()
         cursor = conn.cursor()
@@ -31,12 +31,12 @@ class ApDao:
     def update(self, apto):
         query = 'update apto set title = %s, description= %s, price= %s, old_price= %s, category= %s, ' \
                 'url= %s, seller= %s, phone= %s, image= %s, city= %s, uf= %s, cep= %s, neighbourhood= %s,' \
-                'address= %s, date_insert= %s, page = %s ' \
-                'where id = %s'
+                'address= %s, date_insert= %s, page = %s, site = %s ' \
+                'where id = %s and id '
 
         args = (str(apto.title),str(apto.description),str(apto.price),str(apto.old_price),str(apto.category),
                 str(apto.url),str(apto.seller),str(apto.phone),str(apto.image),str(apto.city),str(apto.uf),
-                str(apto.cep),str(apto.neighbourhood),str(apto.address),str(apto.date_insert),int(apto.page),str(apto.id))
+                str(apto.cep),str(apto.neighbourhood),str(apto.address),str(apto.date_insert),int(apto.page),str(apto.site),str(apto.id))
         print('UPDATE: '+ str(args))
         conn = self.c.connect()
         cursor = conn.cursor()
@@ -74,7 +74,7 @@ class ApDao:
         return result[0][0]
 
     def save(self, apto):
-        if self.exists(apto) == 'S':
+        '''if self.exists(apto) == 'S':
             self.update(apto)
-        else:
-            self.insert(apto)
+        else:'''
+        self.insert(apto)

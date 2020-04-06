@@ -1,34 +1,19 @@
-import requests
 import re
 import json
-import time
 from bs4 import BeautifulSoup
 from src.dto.ApDto import ApDto
-from random import randrange
+from src.scrap.ApScrap import ApScrap
+
 
 class ApOlx:
-    url = ''
-    pages = ''
-    headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) '
-                             'Chrome/53.0.2785.143 Safari/537.36'}
 
     def __init__(self):
-        self.pages = 101
-
-    # Search Html page
-    def get_page_html(self, url):
-        print('get_page_html: ' + url)
-
-        time.sleep(randrange(1, 3))
-        r = requests.get(url, headers=self.headers)
-
-        if r.status_code == 200:
-            return r.text
-        else:
-            return ''
+        self.web = ApScrap(1, 2)
+        self.url = r'https://sc.olx.com.br/norte-de-santa-catarina/regiao-de-joinville-e-norte-do-estado/' \
+                   r'joinville/imoveis/venda/apartamentos?o='
 
     # Get Links from Html
-    def get_links(self, html):
+    def get_structure(self, html):
 
         links = []
         soup = BeautifulSoup(html, 'html.parser')
@@ -73,8 +58,27 @@ class ApOlx:
             ap.set_neighbourhood(obj["ad"]["location"]["neighbourhood"])
             ap.set_address(obj["ad"]["location"]["address"])
             ap.set_date_insert(obj["ad"]["listTime"])
+            ap.set_site('OLX')
         except Exception as error:
             print(error)
             print('Obj: ' + obj)
         return ap
+
+    def get_dto_ap(self, link):
+        html = self.web.get_page_html(link)
+        return self.get_data(html)
+
+    # Get Results from OLX website
+    def get_aptos_olx(self):
+        for i in range(self.web.first_page, self.web.last_page):
+            html = self.web.get_page_html(self.url + str(i))
+            links = self.get_structure(html)
+            aptos = []
+            for link in links:
+                ap = self.get_dto_ap(link)
+                ap.set_page(i)
+                aptos.append(ap)
+        return aptos
+
+
 

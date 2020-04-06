@@ -29,6 +29,7 @@ class ApDto:
         self.description = ''
         self.image = ''
         self.uf = ''
+        self.site = ''
 
     def get_id(self):
         return self.id
@@ -70,7 +71,7 @@ class ApDto:
         if pd.isnull(description):
             self.description = ''
         else:
-            self.description = description.upper().strip()
+            self.description = (description.upper().strip())[0:3700]
 
     def set_price(self, price):
         if pd.isnull(price):
@@ -150,3 +151,9 @@ class ApDto:
             self.date_insert = ''
         else:
             self.date_insert = date_insert
+
+    def set_site(self, site):
+        if pd.isnull(site):
+            self.site = ''
+        else:
+            self.site = site
